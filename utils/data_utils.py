@@ -11,11 +11,15 @@ def load_data(batch_size=128):
     """Load and prepare Fashion MNIST dataset"""
     print("Loading Fashion MNIST dataset...")
     
-    # Define transforms
+    # Define transforms with simple augmentation
     transform = transforms.Compose([
+        transforms.RandomCrop(28, padding=4),      # pad→random crop back to 28×28
+        transforms.RandomHorizontalFlip(),         # 50% chance of horizontal flip
         transforms.ToTensor(),
+        transforms.Normalize((0.2860,), (0.3530,)),
+        transforms.RandomRotation(15),
     ])
-    
+
     # Load the dataset
     train_dataset = datasets.FashionMNIST(root='./data', train=True, download=True, transform=transform)
     test_dataset = datasets.FashionMNIST(root='./data', train=False, download=True, transform=transform)

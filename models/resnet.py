@@ -51,7 +51,9 @@ class ResNet18(nn.Module):
         
         # Final classification layer
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.dropout = nn.Dropout(p=0.5)
         self.fc = nn.Linear(512, num_classes)
+
         
     def _make_layer(self, block, out_channels, num_blocks, stride):
         strides = [stride] + [1] * (num_blocks - 1)
@@ -73,6 +75,7 @@ class ResNet18(nn.Module):
         
         out = self.avg_pool(out)
         out = out.view(out.size(0), -1)
+        out = self.dropout(out)
         out = self.fc(out)
         
         return out

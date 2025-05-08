@@ -14,10 +14,12 @@ def parse_args():
     parser.add_argument("--epochs", type=int, default=10, help="Number of epochs to train")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for training")
     parser.add_argument("--lr", type=float, default=0.001, help="Learning rate")
+    parser.add_argument("--weight_decay", type=float, default=1e-4, 
+                        help="L2 regularization (weight decay)")
     parser.add_argument("--checkpoint_dir", default="checkpoints", help="Directory to save checkpoints")
     return parser.parse_args()
 
-def train_model(model, train_loader, val_loader, epochs=10, lr=0.001, checkpoint_dir='checkpoints'):
+def train_model(model, train_loader, val_loader, epochs=10, lr=0.001, weight_decay=1e-4, checkpoint_dir='checkpoints'):
     """Train the model with validation"""
     if torch.backends.mps.is_available():
         device = torch.device("mps")
@@ -30,7 +32,7 @@ def train_model(model, train_loader, val_loader, epochs=10, lr=0.001, checkpoint
 
     
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=3, factor=0.5, verbose=True)
     
     # Create checkpoint directory if it doesn't exist
@@ -155,11 +157,12 @@ def main():
     # Train model
     print("\n=== Starting Model Training ===")
     model, best_val_acc = train_model(
-        model, 
-        train_loader, 
-        val_loader, 
-        epochs=args.epochs, 
+        model,
+        train_loader,
+        val_loader,
+        epochs=args.epochs,
         lr=args.lr,
+        weight_decay=args.weight_decay,
         checkpoint_dir=args.checkpoint_dir
     )
     
