@@ -51,18 +51,20 @@ def draw_and_save_detr_results(image, boxes, labels, scores, class_names, save_p
     plt.close()
 
 # Run inference on each image
-for idx in range(5):
-    img_tensor = image_batch[idx]
-    img = transforms.ToPILImage()(unnorm(img_tensor))
 
-    inputs = processor(images=img, return_tensors="pt").to(device)
-    with torch.no_grad():
-        outputs = model(**inputs)
-    results = processor.post_process_object_detection(outputs, threshold=0.5, target_sizes=[img.size])[0]
+def run_detr_inference():
+    for idx in range(5):
+        img_tensor = image_batch[idx]
+        img = transforms.ToPILImage()(unnorm(img_tensor))
 
-    boxes = results["boxes"].cpu().numpy()
-    labels = results["labels"].cpu().numpy()
-    scores = results["scores"].cpu().numpy()
+        inputs = processor(images=img, return_tensors="pt").to(device)
+        with torch.no_grad():
+            outputs = model(**inputs)
+        results = processor.post_process_object_detection(outputs, threshold=0.5, target_sizes=[img.size])[0]
 
-    save_path = f"ANDY/output/detr_result_{idx+1}.png"
-    draw_and_save_detr_results(img, boxes, labels, scores, class_names, save_path)
+        boxes = results["boxes"].cpu().numpy()
+        labels = results["labels"].cpu().numpy()
+        scores = results["scores"].cpu().numpy()
+
+        save_path = f"output/detr_result_{idx+1}.png"
+        draw_and_save_detr_results(img, boxes, labels, scores, class_names, save_path)

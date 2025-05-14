@@ -1,3 +1,26 @@
 *.pth
 .venv
 venv
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# model weights
+*.safetensors
+*.bin
+
+# dataset files
+*.gz
+*.idx*
+*.ubyte
+
+# results and figures
+*.png
+
+# Jupyter/IPython auto folders
+__pycache__/
+.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store

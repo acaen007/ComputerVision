@@ -1,0 +1,12 @@
+torch>=1.13
+torchvision>=0.14
+transformers>=4.28
+datasets>=2.8.0
+scikit-learn
+matplotlib
+seaborn
+Pillow
+pycocotools
+tqdm
+ipykernel
+timm
