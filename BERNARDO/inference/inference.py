@@ -4,15 +4,16 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from sklearn.metrics import classification_report, accuracy_score
-from .models.resnet import ResNet18
-from .utils.data_utils import load_data, class_names
-from .utils.visualization import visualize_predictions, plot_confusion_matrix
+from BERNARDO.models.resnet import ResNet18
+from BERNARDO.utils.data_utils import load_data, class_names
+from BERNARDO.utils.visualization import visualize_predictions, plot_confusion_matrix
+
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Fashion MNIST Classification Pipeline")
     parser.add_argument("--model", default="resnet18", help="Model architecture to use")
-    parser.add_argument("--checkpoint", default="checkpoints/resnet18_fashion_mnist_best.pth", 
-                      help="Path to model checkpoint")
+    parser.add_argument("--checkpoint", default="BERNARDO/models/resnet18_fashion_mnist_best.pth", help="Path to model checkpoint")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for inference")
     parser.add_argument("--num_samples", type=int, default=15, help="Number of samples to visualize")
     parser.add_argument("--save_dir", default="results", help="Directory to save results")

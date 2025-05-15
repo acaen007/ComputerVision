@@ -4,7 +4,8 @@ import torch
 import torch.nn.functional as F
 import seaborn as sns
 from sklearn.metrics import classification_report, confusion_matrix
-from utils.data_utils import class_names
+from BERNARDO.utils.data_utils import class_names
+
 
 def visualize_predictions(model, X_test, y_test, num_samples=15):
     """Visualize model predictions on random test samples"""

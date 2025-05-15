@@ -23,7 +23,7 @@ except ImportError as e:
     run_detr_inference = None
 
 try:
-    from BERNARDO.inference import run_resnet_inference
+    from BERNARDO.inference.inference import run_resnet_inference
 except ImportError as e:
     print(f"Could not import RESNET inference function: {e}")
     print("Ensure BERNARDO/inference/inference.py exists and is structured correctly.")
