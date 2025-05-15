@@ -67,48 +67,47 @@ def evaluate_model(model, test_loader, X_test, y_test):
     
     return test_acc, all_preds, all_targets
 
-def main():
+
+def run_resnet_inference(project_root):
     args = parse_args()
-    
-    # Create save directory if it doesn't exist
+
+    # Override args.save_dir with project-specific output path
+    args.save_dir = os.path.join(project_root, "output", "RESNET")
     os.makedirs(args.save_dir, exist_ok=True)
-    
+
     # Load data
     _, _, test_loader, X_test, y_test = load_data(batch_size=args.batch_size)
-    
+
     # Initialize model
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
-    
+
     if args.model == "resnet18":
         model = ResNet18(num_classes=10)
     else:
         raise ValueError(f"Unsupported model: {args.model}")
-    
+
     # Load checkpoint
     model.load_state_dict(torch.load(args.checkpoint, map_location=device))
     model.to(device)
     model.eval()
-    
+
     # Run inference and evaluate
     print("\n=== Running Inference ===")
     test_acc, predictions, targets = evaluate_model(model, test_loader, X_test, y_test)
-    
+
     # Visualize sample predictions
     print("\n=== Visualizing Sample Predictions ===")
     visualize_predictions(model, X_test, y_test, num_samples=args.num_samples)
-    
+
     # Save evaluation results
-    results_file = f"{args.save_dir}/evaluation_results.txt"
+    results_file = os.path.join(args.save_dir, "evaluation_results.txt")
     with open(results_file, 'w') as f:
         f.write(f"Fashion MNIST ResNet-18 Evaluation Results\n\n")
         f.write(f"Test Accuracy: {test_acc:.4f}%\n\n")
         f.write("Classification Report:\n")
         f.write(classification_report(targets, predictions, target_names=class_names, digits=4))
-    
-    print(f"\nEvaluation results saved to {results_file}")
-    print(f"Confusion matrix saved to 'confusion_matrix.png'")
-    print(f"Sample predictions saved to 'prediction_samples.png'")
 
-if __name__ == "__main__":
-    main()
+    print(f"\nEvaluation results saved to {results_file}")
+    print(f"Confusion matrix saved to '{args.save_dir}/confusion_matrix.png'")
+    print(f"Sample predictions saved to '{args.save_dir}/prediction_samples.png'")
