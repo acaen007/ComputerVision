@@ -16,8 +16,11 @@ device = torch.device("cpu")
 model_dir = "./ANDY/detr_fashionmnist"
 
 # Load processor and model
-processor = DetrImageProcessor.from_pretrained(model_dir, local_files_only=True)
-model = DetrForObjectDetection.from_pretrained(model_dir, local_files_only=True).to(device)
+# processor = DetrImageProcessor.from_pretrained(model_dir, local_files_only=True)
+# model = DetrForObjectDetection.from_pretrained(model_dir, local_files_only=True).to(device)
+
+processor = DetrImageProcessor.from_pretrained("acaen/detr-fashionmnist")
+model = DetrForObjectDetection.from_pretrained("acaen/detr-fashionmnist")
 
 # Load test images
 _, testloader, class_names = load_fashionmnist(batch_size=5)
