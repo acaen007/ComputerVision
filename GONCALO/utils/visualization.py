@@ -57,7 +57,7 @@ def plot_training_curves(history):
     plt.show()
 
 
-def visualize_model_predictions(model, dataloader, class_names, device="cpu", num_images=25):
+def visualize_model_predictions(model, dataloader, class_names, device="cpu", num_images=25, save_path=None):
     """
     Displays a grid of model predictions with confidence and correctness coloring.
     """
@@ -77,7 +77,11 @@ def visualize_model_predictions(model, dataloader, class_names, device="cpu", nu
             for i in range(inputs.size(0)):
                 if images_shown >= num_images:
                     plt.tight_layout()
-                    plt.show()
+                    if save_path:
+                        plt.savefig(save_path)
+                        print(f"Saved prediction plot to {save_path}")
+                    else:
+                        plt.show()
                     return
 
                 ax = plt.subplot(int(np.sqrt(num_images)), int(np.sqrt(num_images)), images_shown + 1)

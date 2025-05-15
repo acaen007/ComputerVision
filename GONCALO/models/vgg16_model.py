@@ -11,11 +11,11 @@ def build_vgg16_model(device):
     print("Loading pre-trained VGG16 model...")
     model = models.vgg16(pretrained=True)
 
-    # Modify the final fully connected layer
+    # modify the final fully connected layer
     num_features = model.classifier[6].in_features
     model.classifier[6] = nn.Linear(num_features, 10)
 
-    # Move model to device
+    # move model to device
     model = model.to(device)
     return model
 
@@ -54,7 +54,7 @@ def train_model(model, dataloaders, criterion, optimizer, scheduler, num_epochs=
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
-                # Zero parameter gradients
+                # zero parameter gradients
                 optimizer.zero_grad()
 
                 with torch.set_grad_enabled(phase == 'train'):
@@ -77,12 +77,12 @@ def train_model(model, dataloaders, criterion, optimizer, scheduler, num_epochs=
             history[f"{phase}_loss"].append(epoch_loss)
             history[f"{phase}_acc"].append(epoch_acc.item())
 
-            # Deep copy the model if it has the best validation accuracy so far
+            # deep copy the model if it has the best validation accuracy so far
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
 
-        # Adjust learning rate
+        # adjust learning rate
         scheduler.step()
 
     time_elapsed = time.time() - since
