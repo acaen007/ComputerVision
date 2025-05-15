@@ -5,8 +5,8 @@ import torch.nn.functional as F
 import numpy as np
 from sklearn.metrics import classification_report, accuracy_score
 from .models.resnet import ResNet18
-from utils.data_utils import load_data, class_names
-from utils.visualization import visualize_predictions, plot_confusion_matrix
+from .utils.data_utils import load_data, class_names
+from .utils.visualization import visualize_predictions, plot_confusion_matrix
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Fashion MNIST Classification Pipeline")
