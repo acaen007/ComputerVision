@@ -7,13 +7,14 @@ from sklearn.metrics import classification_report, accuracy_score
 from BERNARDO.models.resnet import ResNet18
 from BERNARDO.utils.data_utils import load_data, class_names
 from BERNARDO.utils.visualization import visualize_predictions, plot_confusion_matrix
+from huggingface_hub import hf_hub_download
 
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Fashion MNIST Classification Pipeline")
     parser.add_argument("--model", default="resnet18", help="Model architecture to use")
-    parser.add_argument("--checkpoint", default="BERNARDO/models/resnet18_fashion_mnist_best.pth", help="Path to model checkpoint")
+    parser.add_argument("--checkpoint", default="huggingface", help="Path to model checkpoint or 'huggingface'")
     parser.add_argument("--batch_size", type=int, default=128, help="Batch size for inference")
     parser.add_argument("--num_samples", type=int, default=15, help="Number of samples to visualize")
     parser.add_argument("--save_dir", default="results", help="Directory to save results")
@@ -89,7 +90,17 @@ def run_resnet_inference(project_root):
         raise ValueError(f"Unsupported model: {args.model}")
 
     # Load checkpoint
-    model.load_state_dict(torch.load(args.checkpoint, map_location=device))
+    if args.checkpoint == "huggingface":
+        checkpoint_path = hf_hub_download(
+            repo_id="bernardocosta/resnet18-fashionmnist",  # <--- muda para o teu repo
+            filename="resnet18_fashionmnist_best.pth",
+            repo_type="model"
+        )
+    else:
+        checkpoint_path = args.checkpoint
+
+    model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+
     model.to(device)
     model.eval()
 
