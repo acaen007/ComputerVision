@@ -92,7 +92,7 @@ def run_resnet_inference(project_root):
     # Load checkpoint
     if args.checkpoint == "huggingface":
         checkpoint_path = hf_hub_download(
-            repo_id="bernardocosta/resnet18-fashionmnist",  # <--- muda para o teu repo
+            repo_id="bernardocosta/resnet18-fashionmnist", 
             filename="resnet18_fashionmnist_best.pth",
             repo_type="model"
         )
