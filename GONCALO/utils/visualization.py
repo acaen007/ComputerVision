@@ -1,7 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import os
+import pandas as pd
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 
 def imshow(img, title=None):
     """
@@ -98,16 +100,25 @@ def visualize_model_predictions(model, dataloader, class_names, device="cpu", nu
                 images_shown += 1
 
 
-def plot_confusion_matrix(model, dataloader, class_names, device="cpu"):
+def plot_confusion_matrix(model, dataloader, class_names, device="cpu", save_path=None, max_batches=None):
     """
-    Generates and displays a confusion matrix.
+    Generates and displays a confusion matrix, optionally saving it.
+    If max_batches is set, only that number of batches will be used (for speed/debug).
     """
     model.eval()
     all_preds = []
     all_labels = []
 
     with torch.no_grad():
-        for inputs, labels in dataloader:
+        total_batches = len(dataloader)
+        effective_batches = min(total_batches, max_batches or total_batches)
+        for batch_idx, (inputs, labels) in enumerate(dataloader):
+            if max_batches is not None and batch_idx >= max_batches:
+                break
+
+            percent = (batch_idx + 1) / effective_batches * 100
+            print(f"\rProcessing batch {batch_idx + 1}/{effective_batches} ({percent:.1f}%)", end="", flush=True)
+
             inputs = inputs.to(device)
             labels = labels.to(device)
             outputs = model(inputs)
@@ -115,8 +126,89 @@ def plot_confusion_matrix(model, dataloader, class_names, device="cpu"):
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
 
+        print("\nFinished processing selected batches.")
+
+
     cm = confusion_matrix(all_labels, all_preds)
+
+    plt.figure(figsize=(8, 6))
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
     disp.plot(xticks_rotation=45, cmap="Blues")
     plt.title("Confusion Matrix")
-    plt.show()
+
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight')
+        print(f"Confusion matrix saved to {save_path}")
+        plt.close()
+    else:
+        plt.show()
+
+def generate_classification_report(model, dataloader, class_names, device="cpu", save_dir=".", max_batches=None):
+    """
+    Computes test loss, accuracy, classification report, and saves it as .txt and .png.
+    """
+    model.eval()
+    criterion = torch.nn.CrossEntropyLoss()
+
+    all_preds = []
+    all_labels = []
+    total_loss = 0.0
+    total_correct = 0
+    total_samples = 0
+
+    with torch.no_grad():
+        total_batches = len(dataloader)
+        for batch_idx, (inputs, labels) in enumerate(dataloader):
+            if max_batches is not None and batch_idx >= max_batches:
+                break
+
+            percent = (batch_idx + 1) / min(total_batches, max_batches or total_batches) * 100
+            print(f"\rProcessing batch {batch_idx + 1}/{min(total_batches, max_batches or total_batches)} ({percent:.1f}%)", end="", flush=True)
+            
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            total_loss += loss.item() * inputs.size(0)
+
+            _, preds = torch.max(outputs, 1)
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
+            total_correct += (preds == labels).sum().item()
+            total_samples += labels.size(0)
+
+        print("\nFinished processing selected batches.")
+
+    avg_loss = total_loss / total_samples
+    accuracy = total_correct / total_samples * 100
+
+    # classification report as dictionary
+    report_dict = classification_report(all_labels, all_preds, target_names=class_names, output_dict=True)
+    report_str = classification_report(all_labels, all_preds, target_names=class_names)
+
+    # save it
+    txt_path = os.path.join(save_dir, "classification_report.txt")
+    with open(txt_path, "w") as f:
+        f.write(f"Test Loss: {avg_loss:.4f} - Test Accuracy: {accuracy:.2f}%\n\n")
+        f.write("Classification Report:\n")
+        f.write(report_str)
+    print(f"Classification report saved as text to: {txt_path}")
+
+    # save as an image
+    df_report = pd.DataFrame(report_dict).transpose().round(4)
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.axis('off')
+    table = ax.table(cellText=df_report.values,
+                     colLabels=df_report.columns,
+                     rowLabels=df_report.index,
+                     loc='center',
+                     cellLoc='center')
+    table.scale(1.2, 1.2)
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
+    ax.set_title(f"Test Loss: {avg_loss:.4f} - Test Accuracy: {accuracy:.2f}%", fontsize=12, pad=20)
+    
+    img_path = os.path.join(save_dir, "classification_report.png")
+    plt.savefig(img_path, bbox_inches='tight')
+    plt.close()
+    print(f"Classification report table saved to: {img_path}")

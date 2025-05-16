@@ -5,7 +5,7 @@ import torch
 from huggingface_hub import hf_hub_download
 from GONCALO.models.vgg16_model import build_vgg16_model
 from GONCALO.utils.preprocessing import load_fashionmnist
-from GONCALO.utils.visualization import (visualize_model_predictions, plot_dataset_samples)
+from GONCALO.utils.visualization import (visualize_model_predictions, plot_dataset_samples, plot_confusion_matrix, generate_classification_report)
 
 def run_vgg16_inference(project_root=None):
     """Runs VGG16 inference pipeline on FashionMNIST."""
@@ -28,7 +28,17 @@ def run_vgg16_inference(project_root=None):
 
     print("Running model predictions...")
     visualize_model_predictions(model, testloader, class_names, device=device, num_images=16, save_path=output_path)
+
+    print("Generating confusion matrix...")
+    confusion_matrix_path = os.path.join(project_root or ".", "output", "VGG16", "confusion_matrix.png")
+    plot_confusion_matrix(model, testloader, class_names, device=device, save_path=confusion_matrix_path, max_batches=5)  
+    
+    print("Generating classification report...")
+    output_dir = os.path.join(project_root or ".", "output", "VGG16")
+    generate_classification_report( model, testloader, class_names, device=device, save_dir=output_dir, max_batches=20)
+
     print("VGG16 inference completed.")
 
 if __name__ == "__main__":
     run_vgg16_inference()
+    
