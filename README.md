@@ -43,7 +43,6 @@ output/                        # Output visualizations saved here
 
 1. Clone the repository
 ```bash
-Copiar código
 git clone https://github.com/acaen007/ComputerVision.git
 cd ComputerVision
 ```
@@ -60,7 +59,9 @@ Choose your model, and the inference script for that model will run.
 # VGG16 Model Details (GONCALO)
 -Automatically downloads pretrained weights from Hugging Face:
 https://huggingface.co/thearezes/vgg16-fashionmnist
+
 -Runs inference on the Fashion MNIST test set
+
 -Saves a grid of predicted images to:
 ```bash
 output/VGG16/vgg16_predictions.png
