@@ -56,6 +56,27 @@ Which model would you like to run? (DETR, RESNET, VGG16, or type 'exit' to quit)
 ```
 Choose your model, and the inference script for that model will run.
 
+# Resnet-18 Model Details
+-Automatically downloads pretrained weights from Hugging Face:
+https://huggingface.co/bernardocosta/vgg16-fashionmnist
+-Trained on the Fashion MNIST dataset from scratch using:
+  - Data augmentation
+  - Dropout
+  - Batch normalization
+- Runs inference on the Fashion MNIST test set
+- Generates:
+- Detailed classification report
+- Accuracy metrics
+- Confusion matrix
+- Prediction grid
+## Example Output
+Once ResNet-18 finishes running, the following files will be generated:
+- `evaluation_results.txt` – contains test accuracy and classification metrics  
+- `confusion_matrix.png` – normalized confusion matrix heatmap  
+- `prediction_samples.png` – grid of 15 random test images with predicted labels and confidences
+
+
+
 # VGG16 Model Details 
 -Automatically downloads pretrained weights from Hugging Face:
 https://huggingface.co/thearezes/vgg16-fashionmnist
@@ -82,7 +103,7 @@ output/DETR
 
 # Authors
 
-Bernardo – ResNet
+Bernardo Costa– ResNet18
 
 Andy Caen – DETR
 
