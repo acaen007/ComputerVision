@@ -31,7 +31,7 @@ def run_vgg16_inference(project_root=None):
 
     print("Generating confusion matrix...")
     confusion_matrix_path = os.path.join(project_root or ".", "output", "VGG16", "confusion_matrix.png")
-    plot_confusion_matrix(model, testloader, class_names, device=device, save_path=confusion_matrix_path, max_batches=5)  
+    plot_confusion_matrix(model, testloader, class_names, device=device, save_path=confusion_matrix_path, max_batches=5) #reduced numBatches for computation time  
     
     print("Generating classification report...")
     output_dir = os.path.join(project_root or ".", "output", "VGG16")
