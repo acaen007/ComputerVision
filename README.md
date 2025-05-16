@@ -58,23 +58,14 @@ Choose your model, and the inference script for that model will run.
 
 # Resnet-18 Model Details
 -Automatically downloads pretrained weights from Hugging Face:
-https://huggingface.co/bernardocosta/vgg16-fashionmnist
--Trained on the Fashion MNIST dataset from scratch using:
-  - Data augmentation
-  - Dropout
-  - Batch normalization
-- Runs inference on the Fashion MNIST test set
-- Generates:
+https://huggingface.co/bernardocosta/resnet18-fashionmnist
+
+
+- Runs inference on the Fashion MNIST test set generating:
 - Detailed classification report
 - Accuracy metrics
 - Confusion matrix
 - Prediction grid
-## Example Output
-Once ResNet-18 finishes running, the following files will be generated:
-- `evaluation_results.txt` – contains test accuracy and classification metrics  
-- `confusion_matrix.png` – normalized confusion matrix heatmap  
-- `prediction_samples.png` – grid of 15 random test images with predicted labels and confidences
-
 
 
 # VGG16 Model Details 
