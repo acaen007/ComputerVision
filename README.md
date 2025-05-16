@@ -56,7 +56,7 @@ Which model would you like to run? (DETR, RESNET, VGG16, or type 'exit' to quit)
 ```
 Choose your model, and the inference script for that model will run.
 
-# VGG16 Model Details (GONCALO)
+# VGG16 Model Details 
 -Automatically downloads pretrained weights from Hugging Face:
 https://huggingface.co/thearezes/vgg16-fashionmnist
 
@@ -69,7 +69,7 @@ output/VGG16
 ## Example Output
 Once VGG16 finishes running, the output file vgg16_predictions.png will be generated with model predictions and confidences for sample images.
 
-# DETR Model Details (ANDY)
+# DETR Model Details 
 -Automatically downloads pretrained weights from Hugging Face:
 https://huggingface.co/acaen/detr-fashionmnist
 
