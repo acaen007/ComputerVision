@@ -5,7 +5,7 @@
 To run this project, you'll need the following Python packages:
 
 ```bash
-pip install torch torchvision numpy matplotlib scikit-learn huggingface_hub
+pip install -r requirements.txt
 ```
 
 ## Project Description
