@@ -27,7 +27,7 @@ ANDY/                          # DETR model implementation
 ├── inference/                 # Main inference logic
 ├── models/                    # Model architecture
 ├── utils/                     # Preprocessing and visualization utilities
-BERNARDO/                     # ResNet model implementation
+BERNARDO/                      # ResNet model implementation
 ├── inference/                 # Main inference logic
 ├── models/                    # Model architecture
 ├── utils/                     # Preprocessing and visualization utilities
