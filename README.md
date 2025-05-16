@@ -62,9 +62,9 @@ https://huggingface.co/thearezes/vgg16-fashionmnist
 
 -Runs inference on the Fashion MNIST test set
 
--Saves a grid of predicted images to:
+--Saves a grid of predicted images, confusion matrix, and relevant metrics to:
 ```bash
-output/VGG16/vgg16_predictions.png
+output/VGG16
 ```
 ## Example Output
 Once VGG16 finishes running, the output file vgg16_predictions.png will be generated with model predictions and confidences for sample images.
