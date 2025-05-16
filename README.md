@@ -69,11 +69,22 @@ output/VGG16/vgg16_predictions.png
 ## Example Output
 Once VGG16 finishes running, the output file vgg16_predictions.png will be generated with model predictions and confidences for sample images.
 
+# DETR Model Details (ANDY)
+-Automatically downloads pretrained weights from Hugging Face:
+https://huggingface.co/acaen/detr-fashionmnist
+
+-Runs inference on the Fashion MNIST test set
+
+-Saves a grid of predicted images, confusion matrix on 500 samples, and relevant metrics to:
+```bash
+output/DETR
+```
+
 # Authors
 
 Bernardo – ResNet
 
-Andy – DETR
+Andy Caen – DETR
 
 Gonçalo Arezes – VGG16
 
