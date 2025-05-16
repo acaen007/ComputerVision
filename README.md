@@ -24,7 +24,13 @@ The pipeline handles user input, directory setup, and execution automatically.
 ## Folder Structure
 ```bash
 ANDY/                          # DETR model implementation
-BERNARDO/                      # ResNet model implementation
+├── inference/                 # Main inference logic
+├── models/                    # Model architecture
+├── utils/                     # Preprocessing and visualization utilities
+BERNARDO/                     # ResNet model implementation
+├── inference/                 # Main inference logic
+├── models/                    # Model architecture
+├── utils/                     # Preprocessing and visualization utilities
 GONCALO/                       # VGG16 model implementation
 ├── inference/                 # Main inference logic
 ├── models/                    # Model architecture
